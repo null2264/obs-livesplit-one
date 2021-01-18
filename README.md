@@ -31,3 +31,11 @@ If you add a new function to `ffi.rs`, also add it to `exports.def` and run
 ```sh
 lib /def:exports.def /OUT:obs.lib /MACHINE:x64
 ```
+
+### Fork
+
+This fork is created to make it easier for me to use LiveSplit One.
+
+Added features:
+
+- Start timer hotkey
