@@ -178,6 +178,18 @@ unsafe extern "C" fn get_name(_: *mut c_void) -> *const c_char {
     cstr!("LiveSplit One")
 }
 
+unsafe extern "C" fn start(
+    data: *mut c_void,
+    _: obs_hotkey_id,
+    _: *mut obs_hotkey_t,
+    pressed: bool,
+) {
+    if pressed {
+        let state: &mut State = &mut *data.cast();
+        state.timer.start();
+    }
+}
+
 unsafe extern "C" fn split(
     data: *mut c_void,
     _: obs_hotkey_id,
@@ -288,6 +300,14 @@ unsafe extern "C" fn toggle_timing_method(
 
 unsafe extern "C" fn create(settings: *mut obs_data_t, source: *mut obs_source_t) -> *mut c_void {
     let data = Box::into_raw(Box::new(State::new(parse_settings(settings)))).cast();
+    
+    obs_hotkey_register_source(
+        source,
+        cstr!("hotkey_start_ls"),
+        cstr!("Start"),
+        Some(start),
+        data,
+    );
 
     obs_hotkey_register_source(
         source,
